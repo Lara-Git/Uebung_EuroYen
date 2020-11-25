@@ -1,32 +1,29 @@
 package sample;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 public class Controller {
 
     @FXML private Button btn_Convert;
     @FXML private TextField txt_Euro;
-    @FXML private TextField txt_Yen;
+    @FXML private TextField txt_Convert;
+    @FXML CurrencyConverter Converter;
+    @FXML private ChoiceBox<String> cb_Convert;
     @FXML private Text txt_error;
 
     @FXML
-    public void convert()
-    {
-        CurrencyConverter cu = new CurrencyConverter();
-        try {
-            txt_error.setVisible(false);
-            txt_Yen.setText(String.valueOf(cu.toYen(Double.parseDouble(txt_Euro.getText()))));
-        }
-        catch (Exception ex)
+    void handle_convert(MouseEvent event) {
+        if (!txt_Euro.getText().equals(""))
         {
             try
             {
-                txt_Euro.setText(String.valueOf(cu.toEuro(Double.parseDouble(txt_Yen.getText()))));
-            }
+                txt_Convert.setText(String.format("%.4f", Converter.converter(Double.parseDouble(txt_Euro.getText()),
+                        cb_Convert.getValue())));
 
+            }
             catch (Exception e){
                 txt_error.setVisible(true);
                 //ERROR Msg becomes visible
@@ -34,4 +31,13 @@ public class Controller {
             }
         }
     }
+
+    @FXML
+    public void initialize()
+    {
+        Converter = new CurrencyConverter();
+        cb_Convert.getItems().add("Yen");
+        cb_Convert.getItems().add("US Dollar");
+    }
+
 }

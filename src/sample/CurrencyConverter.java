@@ -1,20 +1,35 @@
 package sample;
 
-public class CurrencyConverter
-{
-    private int toConvert;
+import java.util.ArrayList;
 
-    public double toEuro(double Yen)
+public class CurrencyConverter {
+
+    final private ArrayList<Currency> dataBase = new ArrayList<>();
+
+    public CurrencyConverter()
     {
-        double Euro;
-        Euro = Yen / 124;
-        return Euro;
+        dataBase.add(new Currency("Yen", 124.00));
+        dataBase.add(new Currency("US Dollar", 1.19));
     }
 
-    public double toYen(double Euro)
+    public double converter(double v, String s)
     {
-        double Yen;
-        Yen = Euro * 124;
-        return Yen;
+        Currency c=searchDB(s);
+
+        return v * c.getValue();
+    }
+    public void addCurrency(Currency c)
+    {
+        dataBase.add(c);
+    }
+
+    private Currency searchDB(String s)
+    {
+        for (Currency c:dataBase)
+        {
+            if (s.equals(c.getName()))
+                return c;
+        }
+        return null;
     }
 }
